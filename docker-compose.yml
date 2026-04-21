@@ -11,6 +11,7 @@ services:
 
   produits:
     build: ./produit
+    image: maelmr/devops-tp4:produit.v1
     container_name: produit-service
     ports:
       - "5000:4000"
@@ -26,6 +27,7 @@ services:
     restart: on-failure
 
   authentification:
+    image: maelmr/devops-tp4:auth.v1
     build: ./auth
     container_name: auth-service
     ports:
@@ -43,6 +45,7 @@ services:
     restart: on-failure
 
   commande:
+    image: maelmr/devops-tp4:commande.v1
     build: ./commande
     container_name: commande-service
     ports:
@@ -61,3 +64,11 @@ services:
         condition: service_started
     restart: on-failure
 
+  frontend:
+    image: maelmr/devops-tp4:frontend.v1
+    build: ./frontend
+    container_name: frontendservice
+    ports:
+      - "8080:8080"
+    volumes:
+      - /app/node_modules

@@ -6,4 +6,6 @@ commande/node_modules
 commande/package-lock.json
 auth/node_modules
 auth/package-lock.json
+frontend/node_modules
+frontend/package-lock.json
 /data
