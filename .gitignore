@@ -6,3 +6,4 @@ commande/node_modules
 commande/package-lock.json
 auth/node_modules
 auth/package-lock.json
+/data
