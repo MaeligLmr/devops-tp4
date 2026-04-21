@@ -1,0 +1,63 @@
+version: '3.9'
+services:
+
+  db:
+    container_name: db
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+
+  produits:
+    build: ./produit
+    container_name: produit-service
+    ports:
+      - "5000:4000"
+    env_file: .env
+    environment:
+      PORT_PRODUIT: ${PORT_PRODUIT}
+      MONGO_URI_PRODUIT: ${MONGO_URI_PRODUIT}
+    volumes:
+      - ./produit:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    restart: on-failure
+
+  authentification:
+    build: ./auth
+    container_name: auth-service
+    ports:
+      - "5002:4002"
+    env_file: .env
+    environment:
+      PORT_AUTH: ${PORT_AUTH}
+      MONGO_URI_AUTH: ${MONGO_URI_AUTH}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - ./auth:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    restart: on-failure
+
+  commande:
+    build: ./commande
+    container_name: commande-service
+    ports:
+      - "5001:4001"
+    env_file: .env
+    environment:
+      PORT_COMMANDE: ${PORT_COMMANDE}
+      MONGO_URI_COMMANDE: ${MONGO_URI_COMMANDE}
+    volumes:
+      - ./commande:/app
+      - /app/node_modules
+    depends_on:
+      authentification:
+        condition: service_started
+      produits:
+        condition: service_started
+    restart: on-failure
+

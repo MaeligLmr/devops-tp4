@@ -1,0 +1,8 @@
+/.vscode
+.env
+produit/node_modules
+produit/package-lock.json
+commande/node_modules
+commande/package-lock.json
+auth/node_modules
+auth/package-lock.json
