@@ -5,12 +5,12 @@ services:
     container_name: db
     image: mongo
     volumes:
-      - ./data:/data/db
+      - ${WEBAPP_STORAGE_HOME}/data:/data/db
     ports:
       - "27017:27017"
 
   produits:
-    build: ./produit
+    build: ${WEBAPP_STORAGE_HOME}/produit
     image: maelmr/devops-tp4:produit.v1
     container_name: produit-service
     ports:
@@ -20,7 +20,6 @@ services:
       PORT_PRODUIT: ${PORT_PRODUIT}
       MONGO_URI_PRODUIT: ${MONGO_URI_PRODUIT}
     volumes:
-      - ./produit:/app
       - /app/node_modules
     depends_on:
       - db
@@ -28,7 +27,7 @@ services:
 
   authentification:
     image: maelmr/devops-tp4:auth.v1
-    build: ./auth
+    build: ${WEBAPP_STORAGE_HOME}/auth
     container_name: auth-service
     ports:
       - "5002:4002"
@@ -38,7 +37,6 @@ services:
       MONGO_URI_AUTH: ${MONGO_URI_AUTH}
       JWT_SECRET: ${JWT_SECRET}
     volumes:
-      - ./auth:/app
       - /app/node_modules
     depends_on:
       - db
@@ -46,7 +44,7 @@ services:
 
   commande:
     image: maelmr/devops-tp4:commande.v1
-    build: ./commande
+    build: ${WEBAPP_STORAGE_HOME}/commande
     container_name: commande-service
     ports:
       - "5001:4001"
@@ -55,7 +53,6 @@ services:
       PORT_COMMANDE: ${PORT_COMMANDE}
       MONGO_URI_COMMANDE: ${MONGO_URI_COMMANDE}
     volumes:
-      - ./commande:/app
       - /app/node_modules
     depends_on:
       authentification:
@@ -66,7 +63,7 @@ services:
 
   frontend:
     image: maelmr/devops-tp4:frontend.v1
-    build: ./frontend
+    build: ${WEBAPP_STORAGE_HOME}/frontend
     container_name: frontendservice
     ports:
       - "8080:8080"
